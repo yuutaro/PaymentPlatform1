@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+git_source(:github) {|repo| "https://github.com/#{repo}.git" }
 
 ruby "3.3.3"
 
@@ -13,22 +13,22 @@ gem "mysql2", "~> 0.5"
 gem "puma", "~> 5.0"
 
 # タイムゾーン情報を提供する（標準gem）
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 # railsの起動時間を短縮する（標準gem）
 gem "bootsnap", require: false
 
 group :development, :test do
-	# pryを使えるようにする
-	gem "pry-byebug"
-	gem "pry-doc"
-	gem "pry-rails"
+  # pryを使えるようにする
+  gem "pry-byebug"
+  gem "pry-doc"
+  gem "pry-rails"
 
-	# テストフレームワークrspecを導入
-	gem "rspec-rails"
+  # テストフレームワークrspecを導入
+  gem "rspec-rails"
 
-	# rubocopを導入
-	gem "rubocop-faker"
-	gem "rubocop-rails"
-	gem "rubocop-rspec"
+  # rubocopを導入
+  gem "rubocop-faker"
+  gem "rubocop-rails"
+  gem "rubocop-rspec"
 end
