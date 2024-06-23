@@ -9,12 +9,12 @@ USERID=${LOCAL_USER_ID:-1000}
 GROUPID=${LOCAL_GROUP_ID:-1000}
 
 # ユーザーとグループの作成
-echo "UserName: dockeruser, UserID: $USERID, GroupID: $GROUPID"
-groupadd -g $GROUPID dockeruser
-useradd -m -s /bin/bash -u $USERID -g $GROUPID dockeruser
+echo "UserName: dcuser, UserID: $USERID, GroupID: $GROUPID"
+groupadd -g $GROUPID dcuser
+useradd -m -s /bin/bash -u $USERID -g $GROUPID dcuser
 
-# /myapp ディレクトリの所有者を dockeruser に変更
-chown -R dockeruser:dockeruser /backend
+# /myapp ディレクトリの所有者を dcuser に変更
+chown -R dcuser:dcuser /backend
 
-# コマンドを dockeruser で実行
+# コマンドを dcuser で実行
 exec "$@"
