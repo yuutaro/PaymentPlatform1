@@ -14,6 +14,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     # command: bash -c "bundle exec rails s -b '0.0.0.0'"
     command: bash -c "tail -f log/development.log"
     volumes:
@@ -24,5 +25,15 @@ services:
       - db
     tty: true
     stdin_open: true
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./frontend:/frontend
+    ports:
+      - 3000:3000
 volumes:
   mysql_data:
