@@ -1,11 +1,11 @@
-# テスト(rspec)、コードルール(rubocop, eslint, prettier)のチェックを行う
 name: Continuous Integration
 
-# 実行タイミング
 on:
   push:
+    branches:
+      - dev
+      - main
 
-# ジョブの設定
 jobs:
   rspec:
     runs-on: ubuntu-latest
