@@ -223,6 +223,8 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   mysql2 (~> 0.5)
+  net-pop (~> 0.1.2)
+  net-protocol (~> 0.2.2)
   pry-byebug
   pry-doc
   pry-rails
