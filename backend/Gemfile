@@ -24,6 +24,11 @@ gem "bootsnap", require: false
 # 環境ごとの設定を行う
 gem "config"
 
+# 認証系
+gem "devise"
+gem "devise-i18n"
+gem "devise_token_auth"
+
 gem "net-imap", require: false
 gem "net-pop", require: false
 gem "net-smtp", require: false
