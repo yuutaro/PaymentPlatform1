@@ -12,6 +12,9 @@ gem "mysql2", "~> 0.5"
 # pumaサーバーを使えるようにする（標準gem） [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
+# cors設定を簡単にするためのgem
+gem "rack-cors"
+
 # タイムゾーン情報を提供する（標準gem）
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
