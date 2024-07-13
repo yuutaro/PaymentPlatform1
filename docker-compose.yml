@@ -4,7 +4,7 @@ services:
     image: mysql:8.4
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: myapp_development
+      MYSQL_DATABASE: myapp_database
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
