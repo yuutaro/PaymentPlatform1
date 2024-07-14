@@ -64,4 +64,11 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # 認証メールのドメインを指定
+  config.action_mailer.default_options = { from: "no-reply@example.com" }
+  config.action_mailer.default_url_options = { host: "localhost", port: 3001 }
+
+  # Gem: LetterOpenerに関する設定
+  config.action_mailer.delivery_method = :letter_opener_web
 end
