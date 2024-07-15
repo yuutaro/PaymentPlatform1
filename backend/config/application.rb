@@ -43,5 +43,18 @@ module Backend
 
     # 言語設定
     config.i18n.default_locale = :ja
+
+
+    # セッション情報を保存する方法を指定しています。
+    # :cookie_store は、セッションデータをクッキーに保存することを意味します。
+    # key: "_backend_temp_session" は、セッションクッキーの名前を "_backend_temp_session" に設定します。
+    config.session_store :cookie_store, key: "_backend_temp_session"
+    # クッキーの読み書きを処理するミドルウェアを有効にします。
+    # CookieStore を使用するために必要です。
+    config.middleware.use ActionDispatch::Cookies
+    # クッキーベースのセッションストアを実装するミドルウェアを有効にします。
+    # key: "_backend_temp_session" は、セッションクッキーの名前を "_backend_temp_session" に設定します。
+    # これは、config.session_store で設定したものと同じである必要があります。
+    config.middleware.use ActionDispatch::Session::CookieStore, key: "_backend_temp_session"
   end
 end
