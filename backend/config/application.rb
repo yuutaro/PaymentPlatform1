@@ -44,7 +44,6 @@ module Backend
     # 言語設定
     config.i18n.default_locale = :ja
 
-
     # セッション情報を保存する方法を指定しています。
     # :cookie_store は、セッションデータをクッキーに保存することを意味します。
     # key: "_backend_temp_session" は、セッションクッキーの名前を "_backend_temp_session" に設定します。
