@@ -1,8 +1,8 @@
 import axios, { AxiosResponse, AxiosError } from 'axios'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useUserState } from '@/hooks/useGlobalState'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { useUserState } from '@/hooks/useGlobalState'
 
 type SignInFormData = {
   email: string
@@ -10,7 +10,6 @@ type SignInFormData = {
 }
 
 const SignIn: NextPage = () => {
-
   const router = useRouter()
   const [user, setUser] = useUserState()
 
@@ -33,12 +32,11 @@ const SignIn: NextPage = () => {
   }
 
   const onSubmit: SubmitHandler<SignInFormData> = (data) => {
-
     const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth/sign_in'
     const headers = { 'Content-Type': 'application/json' }
 
-    axios({ method: 'POST', url: url, data: data, headers: headers })
-      .then((res: AxiosResponse) => {
+    axios({ method: 'POST', url: url, data: data, headers: headers }).then(
+      (res: AxiosResponse) => {
         localStorage.setItem('access-token', res.headers['access-token'])
         localStorage.setItem('client', res.headers['client'])
         localStorage.setItem('uid', res.headers['uid'])
@@ -46,19 +44,15 @@ const SignIn: NextPage = () => {
           ...user,
           isFetched: false,
         })
-       
+
         router.push('/')
-      })
+      },
+    )
   }
-
-
-  
-
 
   return (
     <>
       <div className="w-full h-screen flex flex-col">
-
         <p className="pt-24 pb-12 text-3xl flex justify-center">ログイン</p>
         <div className=" flex flex-col items-center">
           <form className="w-1/2" noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -75,21 +69,24 @@ const SignIn: NextPage = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 16 16"
                         fill="currentColor"
-                        className="h-4 w-4 opacity-70">
-                        <path
-                          d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-                        <path
-                          d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
+                        className="h-4 w-4 opacity-70"
+                      >
+                        <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
+                        <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
                       </svg>
                       <input
                         {...field}
                         name="email"
                         type="text"
                         className="grow"
-                        placeholder="Eメール" />
-
+                        placeholder="Eメール"
+                      />
                     </label>
-                    {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
+                    {fieldState.invalid && (
+                      <p className="text-red-500 mt-2">
+                        {fieldState.error?.message}
+                      </p>
+                    )}
                   </div>
                 </>
               )}
@@ -107,11 +104,13 @@ const SignIn: NextPage = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 16 16"
                         fill="currentColor"
-                        className="h-4 w-4 opacity-70">
+                        className="h-4 w-4 opacity-70"
+                      >
                         <path
                           fillRule="evenodd"
                           d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                          clipRule="evenodd" />
+                          clipRule="evenodd"
+                        />
                       </svg>
 
                       <input
@@ -119,10 +118,14 @@ const SignIn: NextPage = () => {
                         name="password"
                         type="password"
                         className="grow"
-                        placeholder="パスワード" />
-
+                        placeholder="パスワード"
+                      />
                     </label>
-                    {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
+                    {fieldState.invalid && (
+                      <p className="text-red-500 mt-2">
+                        {fieldState.error?.message}
+                      </p>
+                    )}
                   </div>
                 </>
               )}
@@ -130,21 +133,13 @@ const SignIn: NextPage = () => {
             <input
               type="submit"
               value="ログイン"
-              className="mt-12 btn w-full" />
+              className="mt-12 btn w-full"
+            />
           </form>
         </div>
-
       </div>
-
-
-
-
-
-
     </>
-
   )
-
 }
 
 export default SignIn

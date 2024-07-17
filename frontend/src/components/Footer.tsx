@@ -2,7 +2,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const Footer = () => {
-
   return (
     <>
       <footer className="footer bg-neutral text-neutral-content p-10">
@@ -20,11 +19,11 @@ const Footer = () => {
           <Link href="/">
             <p className="link link-hover">作品を出品する</p>
           </Link>
-          
+
           <Link href="/">
             <p className="link link-hover">展示会・個展のお知らせ</p>
           </Link>
-            
+
           <a className="link link-hover">アーティストランキング</a>
           <a className="link link-hover">利用規約</a>
         </nav>
@@ -54,7 +53,9 @@ const Footer = () => {
                   alt="x-icon"
                 />
               </div>
-              <a href="https://twitter.com" target="_blank">Twitter</a>
+              <a href="https://twitter.com" target="_blank" rel="noreferrer">
+                Twitter
+              </a>
             </div>
             {/* Instagram */}
             <div className="mb-2 flex items-center">
@@ -67,7 +68,9 @@ const Footer = () => {
                   alt="x-icon"
                 />
               </div>
-              <a href="https://twitter.com" target="_blank">Instagram</a>
+              <a href="https://twitter.com" target="_blank" rel="noreferrer">
+                Instagram
+              </a>
             </div>
             {/* Facebook */}
             <div className="mb-2 flex items-center">
@@ -80,10 +83,11 @@ const Footer = () => {
                   alt="x-icon"
                 />
               </div>
-              <a href="https://twitter.com" target="_blank">Facebook</a>
+              <a href="https://twitter.com" target="_blank" rel="noreferrer">
+                Facebook
+              </a>
             </div>
           </div>
-
         </nav>
       </footer>
     </>
