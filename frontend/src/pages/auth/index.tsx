@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
@@ -40,19 +41,18 @@ const SignUp: NextPage = () => {
   //登録ボタン押した後の処理
   const onSubmit: SubmitHandler<SignUpFormData> = (data) => {
     const SignUp = async (data: SignUpFormData) => {
-      //モックサーバー環境用URL(process.envが機能しないためURL直書き)
-      const url =
-        'https://5fd79527-43d6-4c35-bfa0-74b23dea8af8.mock.pstmn.io' +
-        '/sign_up'
+      //モックサーバー環境用URL
+      const url = process.env.NEXT_PUBLIC_BACK_TEST + '/sign_up'
 
       //Railsサーバー環境用URL
-      //const url = 'localhost:3001' + '/auth'
+      //const url = process.env.NEXT_PUBLIC_BACK + '/auth'
 
       //ヘッダー情報
       const headers = { 'Content-Type': 'application/json' }
 
-      //認証用URL
-      const confirmSuccessUrl = 'localhost:3000' + '/registration/sign_in'
+      //認証用URL(メール文に添付するURL)
+      const confirmSuccessUrl =
+        process.env.NEXT_PUBLIC_FRONT + '/auth/confirm_mail'
 
       await axios({
         method: 'POST',
@@ -67,7 +67,7 @@ const SignUp: NextPage = () => {
 
         console.log(res.data)
         //Railsサーバーからレスポンス来た後の遷移先
-        router.push('/registration/sign_in')
+        router.push('/auth/send_mail')
       })
     }
     SignUp(data)
@@ -75,9 +75,9 @@ const SignUp: NextPage = () => {
 
   return (
     <>
-      <div className="w-full h-screen flex flex-col">
+      <div className="w-full flex flex-col">
         <p className="pt-24 pb-12 text-3xl flex justify-center">会員登録</p>
-        <div className=" flex flex-col items-center">
+        <div className="h-[450px] flex flex-col items-center">
           <form className="w-1/2" noValidate onSubmit={handleSubmit(onSubmit)}>
             {/* userフォーム */}
             <Controller
@@ -193,6 +193,27 @@ const SignUp: NextPage = () => {
               className="mt-12 btn w-full"
             />
           </form>
+        </div>
+
+        <div className="flex justify-center h-[400px] border-t border-zinc-400 ">
+          <div className="w-1/2">
+            <Link href="/">
+              <input
+                type="submit"
+                value="Googleで登録"
+                className="mt-12 btn w-full bg-green-300"
+              />
+            </Link>
+
+            <p className="mt-16 flex justify-center">アカウントをお持ちの方</p>
+            <Link href="/auth/sign_in">
+              <input
+                type="submit"
+                value="ログイン"
+                className="mt-8 btn w-full bg-white"
+              />
+            </Link>
+          </div>
         </div>
       </div>
     </>
