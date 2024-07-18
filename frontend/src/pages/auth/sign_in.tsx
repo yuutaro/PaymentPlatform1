@@ -1,5 +1,6 @@
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useUserState } from '@/hooks/useGlobalState'
@@ -32,7 +33,7 @@ const SignIn: NextPage = () => {
   }
 
   const onSubmit: SubmitHandler<SignInFormData> = (data) => {
-    const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth/sign_in'
+    const url = process.env.NEXT_PUBLIC_BACK + '/auth/sign_in'
     const headers = { 'Content-Type': 'application/json' }
 
     axios({ method: 'POST', url: url, data: data, headers: headers }).then(
@@ -44,7 +45,6 @@ const SignIn: NextPage = () => {
           ...user,
           isFetched: false,
         })
-
         router.push('/')
       },
     )
@@ -52,7 +52,7 @@ const SignIn: NextPage = () => {
 
   return (
     <>
-      <div className="w-full h-screen flex flex-col">
+      <div className="w-full h-[1000px] flex flex-col">
         <p className="pt-24 pb-12 text-3xl flex justify-center">ログイン</p>
         <div className=" flex flex-col items-center">
           <form className="w-1/2" noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -136,6 +136,29 @@ const SignIn: NextPage = () => {
               className="mt-12 btn w-full"
             />
           </form>
+        </div>
+
+        <div className="flex justify-center mt-24 border-t border-zinc-400 ">
+          <div className="w-1/2 mb-48">
+            <Link href="/">
+              <input
+                type="submit"
+                value="Googleでログイン"
+                className="mt-12 btn w-full bg-green-300"
+              />
+            </Link>
+
+            <p className="mt-16 flex justify-center">
+              アカウントをお持ちでない方
+            </p>
+            <Link href="/auth">
+              <input
+                type="submit"
+                value="会員登録"
+                className="mt-8 btn w-full bg-white"
+              />
+            </Link>
+          </div>
         </div>
       </div>
     </>
