@@ -14,10 +14,10 @@ const Header = () => {
   //SignUp,SignInページ遷移用関数
   const toSignUpPage = () => {
     //第1引数に本来のリンクを入れ、第2引数にダミーURL
-    router.push('/registration/sign_up', 'signup')
+    router.push('/auth')
   }
   const toSignInPage = () => {
-    router.push('/registration/sign_in', 'signin')
+    router.push('/auth/sign_in')
   }
 
   return (
