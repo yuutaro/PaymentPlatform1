@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_14_061625) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_25_080852) do
+  create_table "items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", comment: "作品名"
+    t.string "discription", comment: "作品紹介"
+    t.integer "min_price", comment: "価格"
+    t.integer "amount", comment: "個数"
+    t.string "image", comment: "作品画像URL"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
