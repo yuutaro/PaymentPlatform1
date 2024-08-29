@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_25_080852) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_29_054109) do
   create_table "items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", comment: "作品名"
     t.string "discription", comment: "作品紹介"
@@ -19,6 +19,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_25_080852) do
     t.string "image", comment: "作品画像URL"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "state", comment: "公開状況"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
