@@ -24,7 +24,6 @@ const ItemCreate: NextPage = () => {
       discription: '',
       min_price: 0,
       amount: 0,
-      state: 0
     },
   })
 
@@ -34,6 +33,7 @@ const ItemCreate: NextPage = () => {
     discription: {},
     min_price: {},
     amount: {},
+ 
 
     /*
     email: {
@@ -53,6 +53,9 @@ const ItemCreate: NextPage = () => {
 
 */
   }
+
+  const [selectedValue, setSelectedValue] = useState("")
+
   //Base64を用いた画像→テキスト変換
   const [base64, setBase64] = useState('')
   const handleFileChange = (event) => {
@@ -97,7 +100,7 @@ const ItemCreate: NextPage = () => {
       await axios({
         method: 'POST',
         url: url,
-        data: { ...data ,image: base64},
+        data: { ...data ,image: base64, state: selectedValue},
         headers: headers,
       }).then((res: AxiosResponse) => {
         console.log(res.data)
@@ -116,15 +119,16 @@ const ItemCreate: NextPage = () => {
           <form className="w-1/2" noValidate onSubmit={handleSubmit(onSubmit)}>
 
 
+            {/* 作品画像 */}
             <div className="my-8">
               <p>作品画像アップロード</p>
               <div className="flex items-center justify-center w-full">
-                <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-[400px]  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-[400px]  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                   {!base64 ? (
                     <>
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
                         <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                         </svg>
                         <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
@@ -147,6 +151,7 @@ const ItemCreate: NextPage = () => {
               </div> 
             </div>
 
+            {/* タイトル */}
             <div className="my-8">
               <p>タイトル</p>
               <div className="flex items-center justify-center">
@@ -178,7 +183,7 @@ const ItemCreate: NextPage = () => {
               </div>
             </div>
 
-
+            {/* 作品紹介 */}
             <div className="my-8 ">
               <p>作品紹介</p>
               <div className="flex items-center justify-center">
@@ -209,7 +214,8 @@ const ItemCreate: NextPage = () => {
                 />
               </div>
             </div>
-            
+
+            {/* 価格・個数 */}
             <div className="flex ">
               <div className="w-1/3 ">
                 <p>価格</p>
@@ -277,11 +283,29 @@ const ItemCreate: NextPage = () => {
 
             </div>
 
+            {/* 公開設定 */}
+            <div className="my-8">
+              <p>公開設定</p>
+              <select
+                className="mt-4 select select-bordered w-full"
+                value={selectedValue} // valueを使って制御
+                onChange={(e) => setSelectedValue(e.target.value)}
+              >
+                <option value="" disabled>選択してください</option>
+                <option value={10}>下書き保存</option>
+                <option value={20}>非公開</option>
+                <option value={30}>公開</option>
+              </select>
+              
+            </div>
+
+          
+
 
 
             <input
               type="submit"
-              value="出品する"
+              value="完了"
               className="mt-12 btn bg-zinc-600 text-white w-full"
             />
           </form>
