@@ -7,5 +7,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable, :omniauthable, :omniauth_providers => [:google_oauth2]
   include DeviseTokenAuth::Concerns::User
 
-  has_many :items, dependent: :destroy
+  #has_many :items, dependent: :destroy
 end
