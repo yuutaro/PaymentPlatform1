@@ -56,8 +56,12 @@ const AccountMenu = () => {
               <Link href="/auth/sign_in">
                 <li>ログイン</li>
               </Link>
+              <Link href={process.env.NEXT_PUBLIC_BACK + '/current/items'}>
+                <li>商品管理</li>
+              </Link>
             </>
           )}
+
         </ul>
       </div>
 
