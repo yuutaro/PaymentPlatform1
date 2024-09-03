@@ -1,4 +1,3 @@
-import Link from "../../../node_modules/next/link"
 const CenterColumn = () => {
   return (
     <>

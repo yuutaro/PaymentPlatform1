@@ -1,5 +1,5 @@
-import LeftColumn from './footer/LeftColumn'
 import CenterColumn from './footer/CenterColumn'
+import LeftColumn from './footer/LeftColumn'
 import RightColumn from './footer/RightColumn'
 
 const Footer = () => {

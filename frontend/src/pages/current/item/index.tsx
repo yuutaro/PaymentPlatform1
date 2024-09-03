@@ -1,6 +1,6 @@
-import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
-import Image from 'next/image'
+
+import Link from 'next/link'
 import useSWR from 'swr'
 import { fetcher } from '@/utils'
 
@@ -10,6 +10,7 @@ type ItemProps = {
   min_price: number
   state: number
   created_at: string
+  id: number
 }
 
 const Index: NextPage = () => {
@@ -24,8 +25,6 @@ const Index: NextPage = () => {
   </>
 
   console.log(data)
-
-  const items = camelcaseKeys(data.items)
 
   console.log(data.items)
 
@@ -47,28 +46,31 @@ const Index: NextPage = () => {
                   <th>作成日</th>
                   <th>いいね数</th>
                   <th>公開状況</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((item: ItemProps, i: number) => (
                   <>
-                    <tr>
+                    <tr key={i}>
                       <th>
                         <label>
                           <input type="checkbox" className="checkbox" />
                         </label>
                       </th>
                       <td>
-                        <div className="flex items-center gap-3">
-                          <div className="avatar">
-                            <div className=" h-16 w-16">
-                              <img src={item.image} alt={item.name} />
+                        <Link href={'/item/' + item.id}>
+                          <div className="flex items-center gap-3">
+                            <div className="avatar">
+                              <div className=" h-16 w-16">
+                                <img src={item.image} alt={item.name} />
+                              </div>
+                            </div>
+                            <div>
+                              <div className="font-bold">{item.name}</div>
                             </div>
                           </div>
-                          <div>
-                            <div className="font-bold">{item.name}</div>
-                          </div>
-                        </div>
+                        </Link>
                       </td>
                       <td>
                         <div className="flex items-center gap-3">

@@ -1,5 +1,4 @@
-import Link from "../../../node_modules/next/link"
-
+import Link from '../../../node_modules/next/link'
 
 const ToSearch = () => {
   return (
@@ -24,7 +23,6 @@ const ToSearch = () => {
           </button>
         </div>
       </Link>
-
     </>
   )
 }

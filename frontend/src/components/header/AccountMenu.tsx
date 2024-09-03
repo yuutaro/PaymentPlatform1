@@ -2,10 +2,7 @@ import Link from 'next/link'
 import Image from '../../../node_modules/next/image'
 import { useUserState } from '@/hooks/useGlobalState'
 
-
-
 const AccountMenu = () => {
-
   const [user] = useUserState()
 
   return (
@@ -56,16 +53,13 @@ const AccountMenu = () => {
               <Link href="/auth/sign_in">
                 <li>ログイン</li>
               </Link>
-              <Link href={process.env.NEXT_PUBLIC_BACK + '/current/items'}>
+              <Link href="/current/item">
                 <li>商品管理</li>
               </Link>
             </>
           )}
-
         </ul>
       </div>
-
-
     </>
   )
 }

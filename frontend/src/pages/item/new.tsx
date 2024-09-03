@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, ChangeEvent } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 
 //入力フォームの型定義
@@ -33,7 +32,6 @@ const ItemCreate: NextPage = () => {
     discription: {},
     min_price: {},
     amount: {},
- 
 
     /*
     email: {
@@ -54,12 +52,16 @@ const ItemCreate: NextPage = () => {
 */
   }
 
-  const [selectedValue, setSelectedValue] = useState("")
+  const [selectedValue, setSelectedValue] = useState('')
 
   //Base64を用いた画像→テキスト変換
   const [base64, setBase64] = useState('')
-  const handleFileChange = (event) => {
-    
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files || event.target.files.length === 0) {
+      alert('ファイルが選択されていません。')
+      return
+    }
+
     const file = event.target.files[0]
     //拡張子の検証
     if (file && file.type.startsWith('image/')) {
@@ -68,10 +70,12 @@ const ItemCreate: NextPage = () => {
 
       //ファイル読み取り完了後のイベント
       reader.onloadend = () => {
-        //結果を格納
-        const base64String = reader.result
-        setBase64(base64String) // Base64 形式に変換された文字列を状態に保存
-        
+        const base64String = reader.result // 結果を取得
+        if (typeof base64String === 'string') {
+          setBase64(base64String) // Base64形式の文字列を状態に保存
+        } else {
+          alert('読み取りに失敗しました。')
+        }
       }
 
       reader.readAsDataURL(file) // ファイルを Base64 形式のデータ URL として読み取る
@@ -92,7 +96,6 @@ const ItemCreate: NextPage = () => {
       //ヘッダー情報
       const headers = { 'Content-Type': 'application/json' }
 
-
       //認証用URL(メール文に添付するURL)
       //const confirmSuccessUrl =
       //  process.env.NEXT_PUBLIC_FRONT + '/auth/confirm_mail'
@@ -100,7 +103,7 @@ const ItemCreate: NextPage = () => {
       await axios({
         method: 'POST',
         url: url,
-        data: { ...data ,image: base64, state: selectedValue},
+        data: { ...data, image: base64, state: selectedValue },
         headers: headers,
       }).then((res: AxiosResponse) => {
         console.log(res.data)
@@ -117,38 +120,58 @@ const ItemCreate: NextPage = () => {
         <p className="pt-24 pb-12 text-3xl flex justify-center">作品を出品</p>
         <div className="h-[450px] flex flex-col items-center">
           <form className="w-1/2" noValidate onSubmit={handleSubmit(onSubmit)}>
-
-
             {/* 作品画像 */}
             <div className="my-8">
               <p>作品画像アップロード</p>
               <div className="flex items-center justify-center w-full">
-                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-[400px]  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                <label
+                  htmlFor="dropzone-file"
+                  className="flex flex-col items-center justify-center w-full h-[400px]  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                >
                   {!base64 ? (
                     <>
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                        <svg
+                          className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 20 16"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                          />
                         </svg>
-                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                          <span className="font-semibold">Click to upload</span>{' '}
+                          or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          SVG, PNG, JPG or GIF (MAX. 800x400px)
+                        </p>
                       </div>
                     </>
                   ) : (
-                      <img src={base64} className="w-full h-[400px] object-contain" />
-                  )
-                  }
+                    <img
+                      src={base64}
+                      className="w-full h-[400px] object-contain"
+                    />
+                  )}
 
-                  <input 
-                    id="dropzone-file" 
-                    type="file" 
-                    className="hidden" 
+                  <input
+                    id="dropzone-file"
+                    type="file"
+                    className="hidden"
                     onChange={(e) => {
                       handleFileChange(e) // Base64 変換処理を実行
-                    }} 
+                    }}
                   />
                 </label>
-              </div> 
+              </div>
             </div>
 
             {/* タイトル */}
@@ -198,7 +221,6 @@ const ItemCreate: NextPage = () => {
                           <textarea
                             {...field}
                             name="discription"
-                            type="text"
                             className="grow h-36 outline-none resize-none"
                             placeholder="(例) サークル活動で制作した作品になります！期間限定で販売しております"
                           />
@@ -231,7 +253,6 @@ const ItemCreate: NextPage = () => {
                             <input
                               {...field}
                               name="min_price"
-                              
                               type="number"
                               className="grow "
                               placeholder="¥ 3000"
@@ -263,7 +284,6 @@ const ItemCreate: NextPage = () => {
                             <input
                               {...field}
                               name="amount"
-
                               type="number"
                               className="grow "
                               placeholder=""
@@ -280,7 +300,6 @@ const ItemCreate: NextPage = () => {
                   />
                 </div>
               </div>
-
             </div>
 
             {/* 公開設定 */}
@@ -291,17 +310,14 @@ const ItemCreate: NextPage = () => {
                 value={selectedValue} // valueを使って制御
                 onChange={(e) => setSelectedValue(e.target.value)}
               >
-                <option value="" disabled>選択してください</option>
+                <option value="" disabled>
+                  選択してください
+                </option>
                 <option value={10}>下書き保存</option>
                 <option value={20}>非公開</option>
                 <option value={30}>公開</option>
               </select>
-              
             </div>
-
-          
-
-
 
             <input
               type="submit"
@@ -311,8 +327,6 @@ const ItemCreate: NextPage = () => {
           </form>
         </div>
       </div>
-
-      
     </>
   )
 }

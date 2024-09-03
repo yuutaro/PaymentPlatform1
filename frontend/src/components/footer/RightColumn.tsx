@@ -1,5 +1,4 @@
-import Link from "../../../node_modules/next/link"
-import Image from "../../../node_modules/next/image"
+import Image from '../../../node_modules/next/image'
 const RightColumn = () => {
   return (
     <>
@@ -56,7 +55,6 @@ const RightColumn = () => {
           </div>
         </div>
       </nav>
-
     </>
   )
 }
