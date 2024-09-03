@@ -1,9 +1,15 @@
+import axios, { AxiosResponse, AxiosError } from 'axios'
 import Link from 'next/link'
+import { useState } from 'react'
+import useSWR from 'swr'
 import Image from '../../../node_modules/next/image'
 import { useUserState } from '@/hooks/useGlobalState'
+import { fetcher } from '@/utils'
 
 const AccountMenu = () => {
   const [user] = useUserState()
+
+  const url = 'http://localhost:3001/api/v1/current/user'
 
   return (
     <>
@@ -23,10 +29,11 @@ const AccountMenu = () => {
               />
             )}
             {user.isSignedIn && (
-              //ユーザーが設定したアバター画像を表示
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+              <Image
+                src="/user/user_orange.svg"
+                width={14}
+                height={14}
+                alt="default-user"
               />
             )}
           </div>
@@ -40,11 +47,15 @@ const AccountMenu = () => {
               <Link href="/">
                 <li>アカウント設定</li>
               </Link>
-              <Link href="/">
+              <Link href="/auth/sign_out">
                 <li>ログアウト</li>
+              </Link>
+              <Link href="/current/item">
+                <li>商品管理</li>
               </Link>
             </>
           )}
+
           {!user.isSignedIn && (
             <>
               <Link href="/auth">
@@ -52,9 +63,6 @@ const AccountMenu = () => {
               </Link>
               <Link href="/auth/sign_in">
                 <li>ログイン</li>
-              </Link>
-              <Link href="/current/item">
-                <li>商品管理</li>
               </Link>
             </>
           )}
