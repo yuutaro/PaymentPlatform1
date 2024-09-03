@@ -77,11 +77,8 @@ const SignUp: NextPage = () => {
   //登録ボタン押した後の処理
   const onSubmit: SubmitHandler<SignUpFormData> = (data) => {
     const SignUp = async (data: SignUpFormData) => {
-      //モックサーバー環境用URL
-      const url = process.env.NEXT_PUBLIC_BACK_TEST + '/sign_up'
-
       //Railsサーバー環境用URL
-      //const url = process.env.NEXT_PUBLIC_BACK + '/auth'
+      const url = process.env.NEXT_PUBLIC_BACK + '/auth'
 
       //ヘッダー情報
       const headers = { 'Content-Type': 'application/json' }
