@@ -1,15 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import { useUserState } from '@/hooks/useGlobalState'
 
 const Header = () => {
   const router = useRouter()
   //GlobalStateUserを取得
   const [user] = useUserState()
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const registerUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
   //SignUp,SignInページ遷移用関数
   const toSignUpPage = () => {
@@ -92,9 +89,11 @@ const Header = () => {
                 )}
                 {user.isSignedIn && (
                   //ユーザーが設定したアバター画像を表示
-                  <img
-                    alt="Tailwind CSS Navbar component"
+                  <Image
                     src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                    width={50}
+                    height={50}
+                    alt="Tailwind CSS Navbar component"
                   />
                 )}
               </div>

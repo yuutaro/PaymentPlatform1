@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 
@@ -13,7 +14,42 @@ type SignUpFormData = {
 }
 
 const SignUp: NextPage = () => {
+  const [openAuthWindow, setOpenAuthWindow] = useState<Window | null>(null)
   const router = useRouter()
+
+  const handleGoogleAuth = () => {
+    const authWindow = window.open(
+      'http://localhost:3001/api/v1/auth/google_oauth2',
+      '_blank',
+      'width=600,height=400',
+    )
+    setOpenAuthWindow(authWindow)
+  }
+
+  useEffect(() => {
+    if (!openAuthWindow) return
+
+    const handleMessage = (e: MessageEvent) => {
+      const data = e.data as { [key: string]: string }
+      const authParamKeys = ['authToken', 'clientId', 'uid']
+      if (!authParamKeys.every((key) => Object.keys(data).includes(key))) {
+        return
+      }
+
+      // 認証情報をlocalStorageなどに保存
+      localStorage.setItem('access-token', data.authToken)
+      localStorage.setItem('client', data.clientId)
+      localStorage.setItem('uid', data.uid)
+
+      // ユーザー情報を更新または取得
+
+      openAuthWindow.close()
+      setOpenAuthWindow(null)
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [openAuthWindow])
 
   //初期値の定義
   const { handleSubmit, control } = useForm<SignUpFormData>({
@@ -197,13 +233,12 @@ const SignUp: NextPage = () => {
 
         <div className="flex justify-center h-[400px] border-t border-zinc-400 ">
           <div className="w-1/2">
-            <Link href="/">
-              <input
-                type="submit"
-                value="Googleで登録"
-                className="mt-12 btn w-full bg-green-300"
-              />
-            </Link>
+            <button
+              onClick={handleGoogleAuth}
+              className="mt-12 btn w-full bg-green-300"
+            >
+              Googleで登録
+            </button>
 
             <p className="mt-16 flex justify-center">アカウントをお持ちの方</p>
             <Link href="/auth/sign_in">

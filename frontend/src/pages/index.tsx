@@ -1,16 +1,7 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
-import useSWR from 'swr'
-import { fetcher } from '@/utils'
 
 const Index: NextPage = () => {
-  const url = 'http://localhost:3001/api/v1/health_check'
-  const { data, error } = useSWR(url, fetcher)
-
-  /* FrontEnd作成のため一時的にコメントアウト
-  if (error) return <div>Failed to load</div>
-  if (!data) return <div>Loading...</div>
-  */
   return (
     <>
       <div className="w-full flex justify-center mb-48">
