@@ -15,7 +15,7 @@
   ```
   docker compose exec -u <user> <service> <command>
   docker compose exec -u dcuser backend /bin/bash
-  docker compose exec -u node frontend /bin/bash
+  docker compose exec -u dcuser frontend /bin/bash
   ```
 - コンテナ内でのRailsサーバー起動法  
   ```
