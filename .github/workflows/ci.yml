@@ -5,6 +5,7 @@ on:
     branches:
       - dev
       - main
+      - rails7.1
 
 jobs:
   rspec:

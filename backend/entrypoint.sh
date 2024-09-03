@@ -13,7 +13,7 @@ echo "UserName: dcuser, UserID: $USERID, GroupID: $GROUPID"
 groupadd -g $GROUPID dcuser
 useradd -m -s /bin/bash -u $USERID -g $GROUPID dcuser
 
-# /myapp ディレクトリの所有者を dcuser に変更
+# /backend ディレクトリの所有者を dcuser に変更
 chown -R dcuser:dcuser /backend
 
 # コマンドを dcuser で実行
