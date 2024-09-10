@@ -1,6 +1,8 @@
+import crypto from 'crypto'
 import axios, { AxiosResponse, AxiosError } from 'axios'
+import type { NextPage } from 'next'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useSWR from 'swr'
 import Image from '../../../node_modules/next/image'
 import { useUserState } from '@/hooks/useGlobalState'
@@ -8,8 +10,32 @@ import { fetcher } from '@/utils'
 
 const AccountMenu = () => {
   const [user] = useUserState()
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
 
-  const url = 'http://localhost:3001/api/v1/current/user'
+  useEffect(() => {
+    const email = 'yuutaro.mikasa@gmail.com'
+
+    // MD5ハッシュを生成
+    const emailHash = crypto
+      .createHash('md5')
+      .update(email.trim().toLowerCase())
+      .digest('hex')
+
+    // GravatarのURLを作成
+    const url = 'https://www.gravatar.com/avatar/' + emailHash
+
+    // 画像を取得して状態に保存
+    axios
+      .get(url)
+      .then((response) => {
+        if (response.status === 200) {
+          setAvatarUrl(url)
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching Gravatar:', error)
+      })
+  }, [])
 
   return (
     <>
@@ -29,12 +55,16 @@ const AccountMenu = () => {
               />
             )}
             {user.isSignedIn && (
-              <Image
-                src="/user/user_orange.svg"
-                width={14}
-                height={14}
-                alt="default-user"
-              />
+              <>
+                {!user.avatar && <img src={avatarUrl} />}
+                {user.avatar && <img src={avatarUrl} />}
+                <Image
+                  src="/user/user_orange.svg"
+                  width={14}
+                  height={14}
+                  alt="default-user"
+                />
+              </>
             )}
           </div>
         </div>
@@ -42,17 +72,21 @@ const AccountMenu = () => {
           tabIndex={0}
           className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow -mr-16"
         >
-          {user.isSignedIn && (
+          {user.isFetched && (
             <>
-              <Link href="/">
-                <li>アカウント設定</li>
-              </Link>
-              <Link href="/auth/sign_out">
-                <li>ログアウト</li>
-              </Link>
-              <Link href="/current/item">
-                <li>商品管理</li>
-              </Link>
+              {user.isSignedIn && (
+                <>
+                  <Link href="/current/user">
+                    <li>アカウント設定</li>
+                  </Link>
+                  <Link href="/auth/sign_out">
+                    <li>ログアウト</li>
+                  </Link>
+                  <Link href="/current/item">
+                    <li>商品管理</li>
+                  </Link>
+                </>
+              )}
             </>
           )}
 

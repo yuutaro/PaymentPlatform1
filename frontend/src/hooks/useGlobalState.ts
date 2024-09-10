@@ -6,6 +6,7 @@ export const useUserState = () => {
     id: number
     name: string
     email: string
+    avatar: string
     isSignedIn: boolean
     isFetched: boolean
   }
@@ -14,6 +15,7 @@ export const useUserState = () => {
     id: 0,
     name: '',
     email: '',
+    avatar: '0',
     isSignedIn: false,
     isFetched: false,
   }
