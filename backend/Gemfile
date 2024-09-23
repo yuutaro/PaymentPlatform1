@@ -39,6 +39,8 @@ gem "omniauth-rails_csrf_protection"
 
 # 画像アップロードに使用
 gem "carrierwave"
+# AWS-S3に画像アップロード
+gem "fog-aws"
 
 # レスポンスJSONを制御
 gem "active_model_serializers"
