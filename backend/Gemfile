@@ -37,6 +37,9 @@ gem "omniauth-github"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
 
+# 画像アップロードに使用
+gem "carrierwave"
+
 # レスポンスJSONを制御
 gem "active_model_serializers"
 
