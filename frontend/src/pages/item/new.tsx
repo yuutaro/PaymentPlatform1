@@ -1,7 +1,7 @@
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState, ChangeEvent } from 'react'
+import { useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 
 //入力フォームの型定義
@@ -11,6 +11,7 @@ type ItemData = {
   min_price: number
   amount: number
   state: number
+  images: FileList
 }
 
 const ItemCreate: NextPage = () => {
@@ -23,6 +24,7 @@ const ItemCreate: NextPage = () => {
       discription: '',
       min_price: 0,
       amount: 0,
+      images: [],
     },
   })
 
@@ -32,86 +34,48 @@ const ItemCreate: NextPage = () => {
     discription: {},
     min_price: {},
     amount: {},
-
-    /*
-    email: {
-      required: 'メールアドレスを入力してください',
-      pattern: {
-        value:
-          /^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/,
-        message: '正しい形式のメールアドレスを入力してください',
-      },
-    },
-    password: {
-      required: 'パスワードを入力してください',
-    },
-    name: {
-      required: 'ユーザー名を入力してください',
-    },
-
-*/
   }
-
+  //公開設定state
   const [selectedValue, setSelectedValue] = useState('')
 
-  //Base64を用いた画像→テキスト変換
-  const [base64, setBase64] = useState('')
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0) {
-      alert('ファイルが選択されていません。')
-      return
-    }
-
-    const file = event.target.files[0]
-    //拡張子の検証
-    if (file && file.type.startsWith('image/')) {
-      //ファイルを読み取り変換するAPI
-      const reader = new FileReader()
-
-      //ファイル読み取り完了後のイベント
-      reader.onloadend = () => {
-        const base64String = reader.result // 結果を取得
-        if (typeof base64String === 'string') {
-          setBase64(base64String) // Base64形式の文字列を状態に保存
-        } else {
-          alert('読み取りに失敗しました。')
-        }
-      }
-
-      reader.readAsDataURL(file) // ファイルを Base64 形式のデータ URL として読み取る
-    } else {
-      alert('Please upload a valid image file.')
-    }
-  }
-
   //登録ボタン押した後の処理
-  const onSubmit: SubmitHandler<ItemData> = (data) => {
-    const SendItem = async (data: ItemData) => {
-      //モックサーバー環境用URL
-      //const url = "https://f1362c02-c99e-4551-bf6f-4d07f3832ef3.mock.pstmn.io/item"
+  const onSubmit: SubmitHandler<ItemData> = async (data) => {
+    const url = process.env.NEXT_PUBLIC_BACK + '/items'
+    const formData = new FormData()
 
-      //Railsサーバー環境用URL
-      const url = process.env.NEXT_PUBLIC_BACK + '/items'
+    // item フィールドを作成
+    const itemData = {
+      name: data.name,
+      discription: data.discription,
+      min_price: data.min_price.toString(),
+      amount: data.amount.toString(),
+      state: selectedValue,
+    }
 
-      //ヘッダー情報
-      const headers = { 'Content-Type': 'application/json' }
+    // item フィールドをFormDataに追加
+    formData.append('item[name]', itemData.name)
+    formData.append('item[discription]', itemData.discription)
+    formData.append('item[min_price]', itemData.min_price)
+    formData.append('item[amount]', itemData.amount)
+    formData.append('item[state]', itemData.state)
 
-      //認証用URL(メール文に添付するURL)
-      //const confirmSuccessUrl =
-      //  process.env.NEXT_PUBLIC_FRONT + '/auth/confirm_mail'
-
-      await axios({
-        method: 'POST',
-        url: url,
-        data: { ...data, image: base64, state: selectedValue },
-        headers: headers,
-      }).then((res: AxiosResponse) => {
-        console.log(res.data)
-        //Railsサーバーからレスポンス来た後の遷移先
-        router.push('/')
+    // images フィールドにファイルを追加
+    if (data.images.length > 0) {
+      Array.from(data.images).forEach((file: File) => {
+        formData.append('item[images][]', file) // 配列形式で追加
       })
     }
-    SendItem(data)
+
+    // APIリクエスト
+    try {
+      const res = await axios.post(url, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      console.log(res.data)
+      router.push('/')
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -120,59 +84,68 @@ const ItemCreate: NextPage = () => {
         <p className="pt-24 pb-12 text-3xl flex justify-center">作品を出品</p>
         <div className="h-[450px] flex flex-col items-center">
           <form className="w-1/2" noValidate onSubmit={handleSubmit(onSubmit)}>
+            <p>作品画像アップロード</p>
+            <Controller
+              name="images" // images フィールドを指定
+              control={control}
+              render={({ field }) => (
+                <div className="mt-2 w-full">
+                  <label className="input input-bordered flex items-center gap-2">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple // 複数ファイルを選択可能
+                      onChange={(e) => {
+                        if (e.target.files) {
+                          const filesArray = Array.from(e.target.files)
+                          field.onChange(filesArray) // 選択したファイルを images フィールドに設定
+                        } else {
+                          field.onChange([]) // ファイルが選択されなかった場合
+                        }
+                      }}
+                    />
+                  </label>
+                </div>
+              )}
+            />
+
             {/* 作品画像 */}
-            <div className="my-8">
-              <p>作品画像アップロード</p>
+            {/* <div className="my-8">
+              
               <div className="flex items-center justify-center w-full">
                 <label
                   htmlFor="dropzone-file"
                   className="flex flex-col items-center justify-center w-full h-[400px]  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                 >
-                  {!base64 ? (
-                    <>
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg
-                          className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 20 16"
-                        >
-                          <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                          />
-                        </svg>
-                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                          <span className="font-semibold">Click to upload</span>{' '}
-                          or drag and drop
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          SVG, PNG, JPG or GIF (MAX. 800x400px)
-                        </p>
-                      </div>
-                    </>
-                  ) : (
-                    <img
-                      src={base64}
-                      className="w-full h-[400px] object-contain"
-                    />
-                  )}
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg
+                      className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 16"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                      />
+                    </svg>
+                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-semibold">Click to upload</span> or
+                      drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      SVG, PNG, JPG or GIF (MAX. 800x400px)
+                    </p>
+                  </div>
 
-                  <input
-                    id="dropzone-file"
-                    type="file"
-                    className="hidden"
-                    onChange={(e) => {
-                      handleFileChange(e) // Base64 変換処理を実行
-                    }}
-                  />
+                  <input id="dropzone-file" type="file" className="hidden" />
                 </label>
               </div>
-            </div>
+            </div> */}
 
             {/* タイトル */}
             <div className="my-8">
