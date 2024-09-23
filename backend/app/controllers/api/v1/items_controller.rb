@@ -1,13 +1,12 @@
 class Api::V1::ItemsController < ApplicationController
 
 
-  #before_action :authenticate_user!, only: [:new, :create]
 
   def new
     #新規Itemインスタンスを作成
     item = Item.new
     #作品情報入力ページへ遷移
-    redirect_to 'http://localhost:3000/item/'
+    redirect_to 'http://localhost:3000/item/new'
   end
 
 
@@ -29,6 +28,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
 
+
   def show
     item = Item.find(params[:id])
     render json: item
@@ -38,7 +38,7 @@ class Api::V1::ItemsController < ApplicationController
 
   private
   def item_params
-    params.require(:item).permit(:name, :image,:discription, :min_price, :amount, :state)
+    params.require(:item).permit(:name, :discription, :min_price, :amount, :state, images: [])
   end
 
 end
