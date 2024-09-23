@@ -25,6 +25,9 @@ const ItemDetail: NextPage = () => {
     <p>Loading...</p>
   </>
 
+  //data.images配列の格納されている個数を取得
+  const imagesLength = data.images.length
+  console.log(imagesLength)
   return (
     <>
       <button onClick={handleBack} className="ml-12 mt-12 text-3xl">
@@ -34,12 +37,15 @@ const ItemDetail: NextPage = () => {
         <div className="w-1/2 border ">
           {/* 作品画像 */}
           <div className="my-8">
-            <div className="flex items-center justify-center w-full">
-              <img
-                src={data.image}
-                alt={data.name}
-                className="w-full h-[400px] object-contain"
-              />
+            <div className="flex flex-col items-center justify-center w-full">
+              {data.images.map((image: string, i: number) => (
+                <img
+                  key={i}
+                  src={`http://localhost:3001${image.url}`}
+                  alt={`画像${i}`}
+                  className="w-full h-[400px] object-contain"
+                />
+              ))}
             </div>
           </div>
 
