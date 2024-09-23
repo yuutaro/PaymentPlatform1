@@ -36,7 +36,12 @@ const Index: NextPage = () => {
                   <div className="flex flex-col">
                     <div className="h-[300px] w-[300px] aspect-square flex relative justify-center items-center bg-zinc-100 shadow">
                       <img
-                        src={`http://localhost:3001${item.images[1]?.url ? item.images[1].url : item.images[0].url}`}
+                        //src={`http://localhost:3001${item.images[1]?.url ? item.images[1].url : item.images[0].url}`}
+                        src={
+                          item.images[1]?.url
+                            ? item.images[1].url
+                            : item.images[0].url
+                        }
                         alt={item.name}
                         className="h-[300px] w-[300px] object-contain"
                       />

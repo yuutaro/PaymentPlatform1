@@ -33,22 +33,39 @@ const ItemDetail: NextPage = () => {
       <button onClick={handleBack} className="ml-12 mt-12 text-3xl">
         ＜
       </button>
-      <div className="w-full h-[1500px] flex flex-col items-center">
-        <div className="w-1/2 border ">
-          {/* 作品画像 */}
-          <div className="my-8">
+      <div className="w-full flex flex-col items-center">
+        <div className="w-8/12 flex justify-between">
+          {/* サブ作品画像 */}
+          <div className="my-8 w-1/4 mx-2">
             <div className="flex flex-col items-center justify-center w-full">
               {data.images.map((image: string, i: number) => (
-                <img
-                  key={i}
-                  src={`http://localhost:3001${image.url}`}
-                  alt={`画像${i}`}
-                  className="w-full h-[400px] object-contain"
-                />
+                <div
+                  key={i + 1}
+                  className="w-[200px] h-[200px] object-center my-2"
+                >
+                  <img
+                    src={image.url}
+                    alt={`画像${i + 1}`}
+                    className="w-[200px] h-[200px] object-cover "
+                  />
+                </div>
               ))}
             </div>
           </div>
-
+          {/* メイン作品画像 */}
+          <div className="my-8 w-3/4 mx-2">
+            <div className="flex flex-col items-center justify-center w-full">
+              <div className="w-[500px] h-[500px] object-center my-2">
+                <img
+                  src={data.images[0].url}
+                  alt="画像１"
+                  className="w-[500px] h-[500px] object-cover "
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="w-1/2 border ">
           {/* タイトル */}
           <div className="my-8 flex items-center">
             <p className="mr-12">作品名</p>
