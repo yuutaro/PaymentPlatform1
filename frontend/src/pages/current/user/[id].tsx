@@ -1,26 +1,24 @@
 import type { NextPage } from 'next'
 
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { useUserState } from '@/hooks/useGlobalState'
 import { fetcher } from '@/utils'
 
 const MyPage: NextPage = () => {
   const [user] = useUserState()
-  /*
-  const url = `http://localhost:3001/api/v1/current/user/${user.id}`
 
+  const url = `http://localhost:3001/api/v1/current/user/`
+  // // const url = `http://localhost:3001/api/v1/current/user/`
   const { data, error } = useSWR(url, fetcher)
+
   if (error) return <div>Failed to load</div>
   if (!data) return
   ;<>
     <span className="loading loading-ring loading-lg"></span>
     <p>Loading...</p>
   </>
-
-
-  */
+  console.log(data)
 
   return (
     <>
@@ -53,7 +51,7 @@ const MyPage: NextPage = () => {
           {/* ユーザー名 */}
           <div className="my-8 flex items-center">
             <p className="mr-12">ユーザー名</p>
-            <p className="text-2xl ">{user.name}</p>
+            {/* <p className="text-2xl ">{data.name}</p> */}
           </div>
 
           <Link
@@ -62,6 +60,10 @@ const MyPage: NextPage = () => {
           >
             編集
           </Link>
+          <p>{user.id}</p>
+
+          <p>{user.email}</p>
+          {/* <p>userID：{data.id}</p> */}
         </div>
       </div>
     </>
