@@ -6,7 +6,7 @@ import { fetcher } from '@/utils'
 
 type ItemProps = {
   name: string
-  image: string
+  images: string
   min_price: number
   state: number
   created_at: string
@@ -14,7 +14,7 @@ type ItemProps = {
 }
 
 const Index: NextPage = () => {
-  const url = 'http://localhost:3001/api/v1/items'
+  const url = 'http://localhost:3001/api/v1/current/items'
 
   const { data, error } = useSWR(url, fetcher)
   if (error) return <div>Failed to load</div>
@@ -63,7 +63,7 @@ const Index: NextPage = () => {
                           <div className="flex items-center gap-3">
                             <div className="avatar">
                               <div className=" h-16 w-16">
-                                <img src={item.image} alt={item.name} />
+                                <img src={item.images[0].url} alt={item.name} />
                               </div>
                             </div>
                             <div>

@@ -1,6 +1,5 @@
-class Api::V1::ItemsController < ApplicationController
-
-
+class Api::V1::ItemsController < Api::V1::BaseController
+  before_action :authenticate_user! , only: [:create, :new] 
 
   def new
     #新規Itemインスタンスを作成
@@ -12,8 +11,7 @@ class Api::V1::ItemsController < ApplicationController
 
   def create
     # Create a new item with the provided parameters
-    item = Item.new(item_params)
-
+    item = current_user.items.new(item_params)
     # Save the item to the database
     if item.save
       # If successful, render the item as JSON and respond with a 201 Created status

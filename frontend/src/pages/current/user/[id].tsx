@@ -8,8 +8,7 @@ import { fetcher } from '@/utils'
 const MyPage: NextPage = () => {
   const [user] = useUserState()
 
-  const url = `http://localhost:3001/api/v1/current/user/`
-  // // const url = `http://localhost:3001/api/v1/current/user/`
+  const url = process.env.NEXT_PUBLIC_BACK + '/current/user'
   const { data, error } = useSWR(url, fetcher)
 
   if (error) return <div>Failed to load</div>
@@ -60,9 +59,9 @@ const MyPage: NextPage = () => {
           >
             編集
           </Link>
-          <p>{user.id}</p>
+          <p>{data.id}</p>
 
-          <p>{user.email}</p>
+          <p>{data.email}</p>
           {/* <p>userID：{data.id}</p> */}
         </div>
       </div>

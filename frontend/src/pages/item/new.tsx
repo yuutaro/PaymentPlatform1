@@ -69,7 +69,12 @@ const ItemCreate: NextPage = () => {
     // APIリクエスト
     try {
       const res = await axios.post(url, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'access-token': localStorage.getItem('access-token'),
+          client: localStorage.getItem('client'),
+          uid: localStorage.getItem('uid'),
+        },
       })
       console.log(res.data)
       router.push('/')

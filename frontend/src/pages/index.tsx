@@ -53,7 +53,10 @@ const Index: NextPage = () => {
                       </div>
                     </div>
 
-                    <p className="mt-4 ml-4">{item.name}</p>
+                    <p className="mt-4 ml-4 flex flex-col">
+                      {item.name}
+                      <span>id：{item.id}</span>
+                    </p>
                   </div>
                 </Link>
               ))}
