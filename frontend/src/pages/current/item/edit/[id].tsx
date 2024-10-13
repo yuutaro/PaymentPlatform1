@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import useSWR from 'swr'
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn'
@@ -17,12 +17,19 @@ type ItemData = {
   images: FileList
 }
 
-const ItemCreate: NextPage = () => {
+//商品編集画面
+const ItemEdit: NextPage = () => {
   useRequireSignedIn()
   const router = useRouter()
+  //現在のURLからidを取得
+  const { id } = router.query
+  const url = `http://localhost:3001/api/v1/current/items/${id}`
+  //指定したidのitemを取得
+  const { data: pre } = useSWR(url, fetcher)
 
   //初期値の定義
-  const { handleSubmit, control } = useForm<ItemData>({
+  // フォームの定義
+  const { handleSubmit, control, reset } = useForm<ItemData>({
     defaultValues: {
       name: '',
       discription: '',
@@ -39,12 +46,27 @@ const ItemCreate: NextPage = () => {
     min_price: {},
     amount: {},
   }
+
+  // データが取得できたらフォームに初期値をセット
+  useEffect(() => {
+    if (pre) {
+      reset({
+        name: pre.name,
+        discription: pre.discription,
+        min_price: pre.min_price,
+        amount: pre.amount,
+        images: pre.images,
+        state: pre.state,
+      })
+    }
+  }, [pre, reset])
+
   //公開設定state
   const [selectedValue, setSelectedValue] = useState('')
 
   //登録ボタン押した後の処理
   const onSubmit: SubmitHandler<ItemData> = async (data) => {
-    const url = process.env.NEXT_PUBLIC_BACK + '/items'
+    const url = process.env.NEXT_PUBLIC_BACK + '/current/items/' + id
     const formData = new FormData()
 
     // item フィールドを作成
@@ -72,7 +94,7 @@ const ItemCreate: NextPage = () => {
 
     // APIリクエスト
     try {
-      const res = await axios.post(url, formData, {
+      const res = await axios.patch(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'access-token': localStorage.getItem('access-token'),
@@ -90,7 +112,7 @@ const ItemCreate: NextPage = () => {
   return (
     <>
       <div className="w-full h-[1500px] flex flex-col">
-        <p className="pt-24 pb-12 text-3xl flex justify-center">作品を出品</p>
+        <p className="pt-24 pb-12 text-3xl flex justify-center">編集画面</p>
         <div className="h-[450px] flex flex-col items-center">
           <form className="w-1/2" noValidate onSubmit={handleSubmit(onSubmit)}>
             <p>作品画像アップロード</p>
@@ -117,6 +139,32 @@ const ItemCreate: NextPage = () => {
                 </div>
               )}
             />
+            <div className="w-full flex justify-between">
+              <div className="w-[100px] h-[100px] object-center my-2">
+                <img
+                  src={pre?.images[0]?.url}
+                  className="w-[100px] h-[100px] object-cover "
+                />
+              </div>
+              <div className="w-[100px] h-[100px] object-center my-2">
+                <img
+                  src={pre?.images[1]?.url}
+                  className="w-[100px] h-[100px] object-cover "
+                />
+              </div>
+              <div className="w-[100px] h-[100px] object-center my-2">
+                <img
+                  src={pre?.images[2]?.url}
+                  className="w-[100px] h-[100px] object-cover "
+                />
+              </div>
+              <div className="w-[100px] h-[100px] object-center my-2">
+                <img
+                  src={pre?.images[3]?.url}
+                  className="w-[100px] h-[100px] object-cover "
+                />
+              </div>
+            </div>
 
             {/* 作品画像 */}
             {/* <div className="my-8">
@@ -173,7 +221,6 @@ const ItemCreate: NextPage = () => {
                             name="name"
                             type="text"
                             className="grow"
-                            placeholder="(例)　オリジナルプラモデル"
                           />
                         </label>
                         {fieldState.invalid && (
@@ -204,7 +251,6 @@ const ItemCreate: NextPage = () => {
                             {...field}
                             name="discription"
                             className="grow h-36 outline-none resize-none"
-                            placeholder="(例) サークル活動で制作した作品になります！期間限定で販売しております"
                           />
                         </label>
                         {fieldState.invalid && (
@@ -313,7 +359,7 @@ const ItemCreate: NextPage = () => {
   )
 }
 
-export default ItemCreate
+export default ItemEdit
 
 /*
 商品情報入力して、データベースに反映、商品情報を閲覧できるところまでやる

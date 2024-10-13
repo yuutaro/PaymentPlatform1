@@ -5,7 +5,7 @@ import RightColumn from './footer/RightColumn'
 const Footer = () => {
   return (
     <>
-      <footer className="footer bg-neutral text-neutral-content p-10">
+      <footer className="footer bg-neutral text-neutral-content p-10 ">
         <LeftColumn />
         <CenterColumn />
         <RightColumn />

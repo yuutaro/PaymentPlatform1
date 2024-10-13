@@ -13,6 +13,7 @@ const SignOut: NextPage = () => {
       id: 0,
       name: '',
       email: '',
+      avatar: '0',
       isSignedIn: false,
       isFetched: true,
     })

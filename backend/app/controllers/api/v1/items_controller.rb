@@ -1,5 +1,5 @@
 class Api::V1::ItemsController < Api::V1::BaseController
-  before_action :authenticate_user! , only: [:create, :new] 
+  before_action :authenticate_user!, only: [:create] 
 
   def new
     #新規Itemインスタンスを作成
@@ -7,6 +7,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
     #作品情報入力ページへ遷移
     redirect_to 'http://localhost:3000/item/new'
   end
+  
 
 
   def create
@@ -26,11 +27,11 @@ class Api::V1::ItemsController < Api::V1::BaseController
   end
 
 
-
   def show
-    item = Item.find(params[:id])
-    render json: item
+    item = Item.includes(:user).find(params[:id])
+    render json: item.as_json(include: { user: { only: [:name] } })
   end
+
 
 
 

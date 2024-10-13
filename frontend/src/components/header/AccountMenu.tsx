@@ -1,12 +1,11 @@
 import crypto from 'crypto'
-import axios, { AxiosResponse, AxiosError } from 'axios'
-import type { NextPage } from 'next'
+import axios from 'axios'
+
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import useSWR from 'swr'
+
 import Image from '../../../node_modules/next/image'
 import { useUserState } from '@/hooks/useGlobalState'
-import { fetcher } from '@/utils'
 
 const AccountMenu = () => {
   const [user] = useUserState()

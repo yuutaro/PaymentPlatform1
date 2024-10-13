@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_10_081923) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_28_171341) do
   create_table "items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", comment: "作品名"
     t.string "discription", comment: "作品紹介"
@@ -20,6 +20,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_10_081923) do
     t.datetime "updated_at", null: false
     t.integer "state", comment: "公開状況"
     t.json "images", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_items_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -48,4 +50,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_10_081923) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "items", "users"
 end

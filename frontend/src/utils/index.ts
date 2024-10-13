@@ -12,6 +12,6 @@ export const fetcher = (url: string) =>
     })
     .then((res: AxiosResponse) => res.data)
     .catch((err: AxiosError) => {
-      console.log(err.message)
+      //console.log(err.message)
       throw err
     })

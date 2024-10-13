@@ -17,9 +17,14 @@ type ItemData = {
   images: FileList
 }
 
-const ItemCreate: NextPage = () => {
+const ItemEdit: NextPage = () => {
   useRequireSignedIn()
   const router = useRouter()
+
+  const { id } = router.query
+  const url = `http://localhost:3001/api/v1/items/${id}`
+  //指定したidのitemを取得
+  const { data, error } = useSWR(url, fetcher)
 
   //初期値の定義
   const { handleSubmit, control } = useForm<ItemData>({
@@ -31,6 +36,8 @@ const ItemCreate: NextPage = () => {
       images: [],
     },
   })
+
+  console.log(data)
 
   //フォームのバリデーション定義
   const validationRules = {
@@ -90,7 +97,7 @@ const ItemCreate: NextPage = () => {
   return (
     <>
       <div className="w-full h-[1500px] flex flex-col">
-        <p className="pt-24 pb-12 text-3xl flex justify-center">作品を出品</p>
+        <p className="pt-24 pb-12 text-3xl flex justify-center">編集画面</p>
         <div className="h-[450px] flex flex-col items-center">
           <form className="w-1/2" noValidate onSubmit={handleSubmit(onSubmit)}>
             <p>作品画像アップロード</p>
@@ -173,7 +180,6 @@ const ItemCreate: NextPage = () => {
                             name="name"
                             type="text"
                             className="grow"
-                            placeholder="(例)　オリジナルプラモデル"
                           />
                         </label>
                         {fieldState.invalid && (
@@ -313,7 +319,7 @@ const ItemCreate: NextPage = () => {
   )
 }
 
-export default ItemCreate
+export default ItemEdit
 
 /*
 商品情報入力して、データベースに反映、商品情報を閲覧できるところまでやる
