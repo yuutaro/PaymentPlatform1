@@ -366,6 +366,7 @@ GEM
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
     stringio (3.1.1)
+    stripe (9.1.0)
     strscan (3.1.0)
     thor (1.3.1)
     tilt (2.4.0)
@@ -416,10 +417,11 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   solargraph
+  stripe (= 9.1.0)
   tzinfo-data
 
 RUBY VERSION
    ruby 3.2.4p170
 
 BUNDLED WITH
-   2.5.17
+   2.5.18

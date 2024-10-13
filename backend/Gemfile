@@ -40,6 +40,9 @@ gem "omniauth-rails_csrf_protection"
 # レスポンスJSONを制御
 gem "active_model_serializers"
 
+# stripe
+gem "stripe", "9.1.0"
+
 group :development, :test do
   # テスト用データを簡単に作成する
   gem "factory_bot_rails"
@@ -62,4 +65,6 @@ group :development, :test do
   gem "rubocop-faker"
   gem "rubocop-rails"
   gem "rubocop-rspec"
+
+  gem "solargraph"
 end
