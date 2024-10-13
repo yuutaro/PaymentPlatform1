@@ -1,20 +1,18 @@
-class Api::V1::ItemsController < ApplicationController
-
-
-  #before_action :authenticate_user!, only: [:new, :create]
+class Api::V1::ItemsController < Api::V1::BaseController
+  before_action :authenticate_user!, only: [:create] 
 
   def new
     #新規Itemインスタンスを作成
     item = Item.new
     #作品情報入力ページへ遷移
-    redirect_to 'http://localhost:3000/item/'
+    redirect_to 'http://localhost:3000/item/new'
   end
+  
 
 
   def create
     # Create a new item with the provided parameters
-    item = Item.new(item_params)
-
+    item = current_user.items.new(item_params)
     # Save the item to the database
     if item.save
       # If successful, render the item as JSON and respond with a 201 Created status
@@ -30,15 +28,16 @@ class Api::V1::ItemsController < ApplicationController
 
 
   def show
-    item = Item.find(params[:id])
-    render json: item
+    item = Item.includes(:user).find(params[:id])
+    render json: item.as_json(include: { user: { only: [:name] } })
   end
+
 
 
 
   private
   def item_params
-    params.require(:item).permit(:name, :image,:discription, :min_price, :amount, :state)
+    params.require(:item).permit(:name, :discription, :min_price, :amount, :state, images: [])
   end
 
 end
