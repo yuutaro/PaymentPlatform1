@@ -33,7 +33,7 @@ const ItemEdit: NextPage = () => {
       discription: '',
       min_price: 0,
       amount: 0,
-      images: [],
+      images: undefined, // FileListの初期値をnullに変更
     },
   })
 
@@ -92,6 +92,12 @@ const ItemEdit: NextPage = () => {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  // エラーハンドリングを追加
+  if (error) {
+    console.error('データ取得エラー:', error)
+    return <p>データの取得に失敗しました。</p>
   }
 
   return (
@@ -175,18 +181,9 @@ const ItemEdit: NextPage = () => {
                     <>
                       <div className="mt-2 w-full">
                         <label className="input input-bordered flex items-center gap-2">
-                          <input
-                            {...field}
-                            name="name"
-                            type="text"
-                            className="grow"
-                          />
+                          <input {...field} name="name" type="text" className="grow" />
                         </label>
-                        {fieldState.invalid && (
-                          <p className="text-red-500 mt-2">
-                            {fieldState.error?.message}
-                          </p>
-                        )}
+                        {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                       </div>
                     </>
                   )}
@@ -213,11 +210,7 @@ const ItemEdit: NextPage = () => {
                             placeholder="(例) サークル活動で制作した作品になります！期間限定で販売しております"
                           />
                         </label>
-                        {fieldState.invalid && (
-                          <p className="text-red-500 mt-2">
-                            {fieldState.error?.message}
-                          </p>
-                        )}
+                        {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                       </div>
                     </>
                   )}
@@ -238,19 +231,9 @@ const ItemEdit: NextPage = () => {
                       <>
                         <div className="mt-2 w-full">
                           <label className="input input-bordered flex items-center gap-2">
-                            <input
-                              {...field}
-                              name="min_price"
-                              type="number"
-                              className="grow "
-                              placeholder="¥ 3000"
-                            />
+                            <input {...field} name="min_price" type="number" className="grow " placeholder="¥ 3000" />
                           </label>
-                          {fieldState.invalid && (
-                            <p className="text-red-500 mt-2">
-                              {fieldState.error?.message}
-                            </p>
-                          )}
+                          {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                         </div>
                       </>
                     )}
@@ -269,19 +252,9 @@ const ItemEdit: NextPage = () => {
                       <>
                         <div className="mt-2 w-full">
                           <label className="input input-bordered flex items-center gap-2">
-                            <input
-                              {...field}
-                              name="amount"
-                              type="number"
-                              className="grow "
-                              placeholder=""
-                            />
+                            <input {...field} name="amount" type="number" className="grow " placeholder="" />
                           </label>
-                          {fieldState.invalid && (
-                            <p className="text-red-500 mt-2">
-                              {fieldState.error?.message}
-                            </p>
-                          )}
+                          {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                         </div>
                       </>
                     )}
@@ -307,11 +280,7 @@ const ItemEdit: NextPage = () => {
               </select>
             </div>
 
-            <input
-              type="submit"
-              value="完了"
-              className="mt-12 btn bg-zinc-600 text-white w-full"
-            />
+            <input type="submit" value="完了" className="mt-12 btn bg-zinc-600 text-white w-full" />
           </form>
         </div>
       </div>
