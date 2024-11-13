@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import useSWR from 'swr'
 import { fetcher } from '@/utils'
@@ -35,27 +36,28 @@ const Index: NextPage = () => {
                 <Link href={'/item/' + item.id} key={i}>
                   <div className="flex flex-col">
                     <div className="h-[300px] w-[300px] aspect-square flex relative justify-center items-center bg-zinc-100 shadow">
-                      <img
-                        //src={`http://localhost:3001${item.images[1]?.url ? item.images[1].url : item.images[0].url}`}
+                      <Image
                         src={
-                          item.images[1]?.url
-                            ? item.images[1].url
-                            : item.images[0].url
+                          Array.isArray(item.images)
+                            ? item.images[1]?.url
+                              ? item.images[1].url
+                              : item.images[0].url
+                            : item.images
                         }
                         alt={item.name}
-                        className="h-[300px] w-[300px] object-contain"
+                        width={300}
+                        height={300}
+                        className="object-contain"
                       />
 
                       <div className="right-0 bottom-0 w-24 h-6 bg-black absolute m-1 bg-opacity-75">
-                        <p className="text-white font-thin flex justify-end mr-2 ">
-                          ¥{item.min_price}
-                        </p>
+                        <p className="text-white font-thin flex justify-end mr-2 ">¥{item.min_price}</p>
                       </div>
                     </div>
 
                     <p className="mt-4 ml-4 flex flex-col">
                       {item.name}
-                      <span>id：{item.id}</span>
+                      <span>id:{item.id}</span>
                     </p>
                   </div>
                 </Link>
