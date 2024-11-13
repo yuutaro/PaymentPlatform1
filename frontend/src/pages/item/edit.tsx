@@ -22,7 +22,7 @@ const ItemEdit: NextPage = () => {
   const router = useRouter()
 
   const { id } = router.query
-  const url = `http://localhost:3001/api/v1/items/${id}`
+  const url = process.env.NEXT_PUBLIC_BACK + `items/${id}`
   //指定したidのitemを取得
   const { data, error } = useSWR(url, fetcher)
 

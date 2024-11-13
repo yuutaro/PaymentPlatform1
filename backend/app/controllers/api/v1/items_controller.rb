@@ -5,8 +5,10 @@ class Api::V1::ItemsController < Api::V1::BaseController
     #新規Itemインスタンスを作成
     item = Item.new
     #作品情報入力ページへ遷移
-    redirect_to 'http://localhost:3000/item/new'
+    redirect_to ENV['FRONT_URL'] + '/item/new'
+    
   end
+
   
 
 

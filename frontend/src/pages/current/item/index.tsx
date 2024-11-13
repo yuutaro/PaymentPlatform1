@@ -14,7 +14,7 @@ type ItemProps = {
 }
 
 const Index: NextPage = () => {
-  const url = 'http://localhost:3001/api/v1/current/items'
+  const url = process.env.NEXT_PUBLIC_BACK + '/current/items'
 
   const { data, error } = useSWR(url, fetcher)
   if (error) return <div>Failed to load</div>

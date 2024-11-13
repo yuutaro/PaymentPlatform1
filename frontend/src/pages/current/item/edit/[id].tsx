@@ -23,7 +23,7 @@ const ItemEdit: NextPage = () => {
   const router = useRouter()
   //現在のURLからidを取得
   const { id } = router.query
-  const url = `http://localhost:3001/api/v1/current/items/${id}`
+  const url = process.env.NEXT_PUBLIC_BACK + `/current/items/${id}`
   //指定したidのitemを取得
   const { data: pre } = useSWR(url, fetcher)
 
@@ -141,28 +141,16 @@ const ItemEdit: NextPage = () => {
             />
             <div className="w-full flex justify-between">
               <div className="w-[100px] h-[100px] object-center my-2">
-                <img
-                  src={pre?.images[0]?.url}
-                  className="w-[100px] h-[100px] object-cover "
-                />
+                <img src={pre?.images[0]?.url} className="w-[100px] h-[100px] object-cover " />
               </div>
               <div className="w-[100px] h-[100px] object-center my-2">
-                <img
-                  src={pre?.images[1]?.url}
-                  className="w-[100px] h-[100px] object-cover "
-                />
+                <img src={pre?.images[1]?.url} className="w-[100px] h-[100px] object-cover " />
               </div>
               <div className="w-[100px] h-[100px] object-center my-2">
-                <img
-                  src={pre?.images[2]?.url}
-                  className="w-[100px] h-[100px] object-cover "
-                />
+                <img src={pre?.images[2]?.url} className="w-[100px] h-[100px] object-cover " />
               </div>
               <div className="w-[100px] h-[100px] object-center my-2">
-                <img
-                  src={pre?.images[3]?.url}
-                  className="w-[100px] h-[100px] object-cover "
-                />
+                <img src={pre?.images[3]?.url} className="w-[100px] h-[100px] object-cover " />
               </div>
             </div>
 
@@ -216,18 +204,9 @@ const ItemEdit: NextPage = () => {
                     <>
                       <div className="mt-2 w-full">
                         <label className="input input-bordered flex items-center gap-2">
-                          <input
-                            {...field}
-                            name="name"
-                            type="text"
-                            className="grow"
-                          />
+                          <input {...field} name="name" type="text" className="grow" />
                         </label>
-                        {fieldState.invalid && (
-                          <p className="text-red-500 mt-2">
-                            {fieldState.error?.message}
-                          </p>
-                        )}
+                        {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                       </div>
                     </>
                   )}
@@ -247,17 +226,9 @@ const ItemEdit: NextPage = () => {
                     <>
                       <div className="mt-2 w-full">
                         <label className="h-40 input input-bordered flex items-center gap-2">
-                          <textarea
-                            {...field}
-                            name="discription"
-                            className="grow h-36 outline-none resize-none"
-                          />
+                          <textarea {...field} name="discription" className="grow h-36 outline-none resize-none" />
                         </label>
-                        {fieldState.invalid && (
-                          <p className="text-red-500 mt-2">
-                            {fieldState.error?.message}
-                          </p>
-                        )}
+                        {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                       </div>
                     </>
                   )}
@@ -278,19 +249,9 @@ const ItemEdit: NextPage = () => {
                       <>
                         <div className="mt-2 w-full">
                           <label className="input input-bordered flex items-center gap-2">
-                            <input
-                              {...field}
-                              name="min_price"
-                              type="number"
-                              className="grow "
-                              placeholder="¥ 3000"
-                            />
+                            <input {...field} name="min_price" type="number" className="grow " placeholder="¥ 3000" />
                           </label>
-                          {fieldState.invalid && (
-                            <p className="text-red-500 mt-2">
-                              {fieldState.error?.message}
-                            </p>
-                          )}
+                          {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                         </div>
                       </>
                     )}
@@ -309,19 +270,9 @@ const ItemEdit: NextPage = () => {
                       <>
                         <div className="mt-2 w-full">
                           <label className="input input-bordered flex items-center gap-2">
-                            <input
-                              {...field}
-                              name="amount"
-                              type="number"
-                              className="grow "
-                              placeholder=""
-                            />
+                            <input {...field} name="amount" type="number" className="grow " placeholder="" />
                           </label>
-                          {fieldState.invalid && (
-                            <p className="text-red-500 mt-2">
-                              {fieldState.error?.message}
-                            </p>
-                          )}
+                          {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                         </div>
                       </>
                     )}
@@ -347,11 +298,7 @@ const ItemEdit: NextPage = () => {
               </select>
             </div>
 
-            <input
-              type="submit"
-              value="完了"
-              className="mt-12 btn bg-zinc-600 text-white w-full"
-            />
+            <input type="submit" value="完了" className="mt-12 btn bg-zinc-600 text-white w-full" />
           </form>
         </div>
       </div>

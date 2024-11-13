@@ -15,7 +15,7 @@ const ItemDetail: NextPage = () => {
   const [number, setNumber] = useState(0) // 初期値を0に設定
   //URLからidの値を取得
   const { id } = router.query
-  const url = `http://localhost:3001/api/v1/items/${id}`
+  const url = process.env.NEXT_PUBLIC_BACK + `/items/${id}`
 
   //指定したidのitemを取得
   const { data, error } = useSWR(url, fetcher)
@@ -42,21 +42,13 @@ const ItemDetail: NextPage = () => {
           <div className="flex flex-col items-center justify-center ">
             {/* main */}
             <div className="w-[500px] h-[500px] object-center my-2">
-              <img
-                src={data.images[number].url}
-                alt="画像１"
-                className="w-[500px] h-[500px] object-cover "
-              />
+              <img src={data.images[number].url} alt="画像１" className="w-[500px] h-[500px] object-cover " />
             </div>
             {/* sub */}
             <div className="my-4 w-[500px]">
               <div className="flex items-center justify-start w-full">
                 {data.images.slice(0, 4).map((image: string, i: number) => (
-                  <div
-                    key={i}
-                    onClick={() => updateNumber(i)}
-                    className={` ${number === i ? 'bg-red-500' : ''}`}
-                  >
+                  <div key={i} onClick={() => updateNumber(i)} className={` ${number === i ? 'bg-red-500' : ''}`}>
                     <SubImage n={image.url} />
                   </div>
                 ))}
@@ -74,19 +66,13 @@ const ItemDetail: NextPage = () => {
           <div className="flex flex-col justify-center  py-12 text-xl">
             <div className="flex items-center">
               <p className="text-sm">在庫数 {data.amount}</p>
-              <div className="ml-8 badge badge-secondary badge-outline">
-                ユニーク作品
-              </div>
-              <p className="ml-12 font-extralight text-3xl">
-                ¥ {data.min_price.toLocaleString()}
-              </p>
+              <div className="ml-8 badge badge-secondary badge-outline">ユニーク作品</div>
+              <p className="ml-12 font-extralight text-3xl">¥ {data.min_price.toLocaleString()}</p>
             </div>
             {/* オークション期日 */}
             <div className="flex items-center  my-12">
               <p className="text-sm">販売方式</p>
-              <div className="ml-8 badge badge-primary badge-outline">
-                オークション
-              </div>
+              <div className="ml-8 badge badge-primary badge-outline">オークション</div>
               <div className="ml-12 flex items-center font-extralight">
                 <div className="flex flex-col items-center">
                   <p className="text-sm">2024/11/15</p>
@@ -144,25 +130,12 @@ const ItemDetail: NextPage = () => {
                 <p className="text-xl font-semibold">{data.user.name}</p>
                 <div className="pt-2 flex items-center">
                   <div className="-ml-2  scale-75 flex rating ">
-                    <input
-                      type="radio"
-                      name="rating-1"
-                      className="mask mask-star"
-                      defaultChecked
-                    />
+                    <input type="radio" name="rating-1" className="mask mask-star" defaultChecked />
                     <p>100</p>
                   </div>
                   <div className="flex pl-28">
-                    <img
-                      src="/sns/x_black.png"
-                      alt="x"
-                      className="h-6 w-6 mr-6"
-                    />
-                    <img
-                      src="/sns/insta_black.png"
-                      alt="x"
-                      className="h-6 w-6 mr-6"
-                    />
+                    <img src="/sns/x_black.png" alt="x" className="h-6 w-6 mr-6" />
+                    <img src="/sns/insta_black.png" alt="x" className="h-6 w-6 mr-6" />
                   </div>
                 </div>
               </div>
@@ -184,10 +157,7 @@ const ItemDetail: NextPage = () => {
                 編集
               </Link>
             ) : (
-              <Link
-                href={'/order/' + data.id}
-                className="w-[500px] btn rounded-full bg-zinc-600 text-white shadow-xl "
-              >
+              <Link href={'/order/' + data.id} className="w-[500px] btn rounded-full bg-zinc-600 text-white shadow-xl ">
                 入札 ¥ {data.min_price.toLocaleString()}
               </Link>
             )}

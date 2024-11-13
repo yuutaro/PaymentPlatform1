@@ -19,7 +19,7 @@ const SignUp: NextPage = () => {
 
   const handleGoogleAuth = () => {
     const authWindow = window.open(
-      'http://localhost:3001/api/v1/auth/google_oauth2',
+      process.env.NEXT_PUBLIC_BACK + '/auth/google_oauth2',
       '_blank',
       'width=600,height=400',
     )
@@ -61,8 +61,7 @@ const SignUp: NextPage = () => {
     email: {
       required: 'メールアドレスを入力してください',
       pattern: {
-        value:
-          /^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/,
+        value: /^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/,
         message: '正しい形式のメールアドレスを入力してください',
       },
     },
@@ -84,8 +83,7 @@ const SignUp: NextPage = () => {
       const headers = { 'Content-Type': 'application/json' }
 
       //認証用URL(メール文に添付するURL)
-      const confirmSuccessUrl =
-        process.env.NEXT_PUBLIC_FRONT + '/auth/confirm_mail'
+      const confirmSuccessUrl = process.env.NEXT_PUBLIC_FRONT + '/auth/confirm_mail'
 
       await axios({
         method: 'POST',
@@ -129,19 +127,9 @@ const SignUp: NextPage = () => {
                       >
                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
                       </svg>
-                      <input
-                        {...field}
-                        name="name"
-                        type="text"
-                        className="grow"
-                        placeholder="ユーザー名"
-                      />
+                      <input {...field} name="name" type="text" className="grow" placeholder="ユーザー名" />
                     </label>
-                    {fieldState.invalid && (
-                      <p className="text-red-500 mt-2">
-                        {fieldState.error?.message}
-                      </p>
-                    )}
+                    {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                   </div>
                 </>
               )}
@@ -164,19 +152,9 @@ const SignUp: NextPage = () => {
                         <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
                         <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
                       </svg>
-                      <input
-                        {...field}
-                        name="email"
-                        type="text"
-                        className="grow"
-                        placeholder="Eメール"
-                      />
+                      <input {...field} name="email" type="text" className="grow" placeholder="Eメール" />
                     </label>
-                    {fieldState.invalid && (
-                      <p className="text-red-500 mt-2">
-                        {fieldState.error?.message}
-                      </p>
-                    )}
+                    {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                   </div>
                 </>
               )}
@@ -203,47 +181,26 @@ const SignUp: NextPage = () => {
                         />
                       </svg>
 
-                      <input
-                        {...field}
-                        name="password"
-                        type="password"
-                        className="grow"
-                        placeholder="パスワード"
-                      />
+                      <input {...field} name="password" type="password" className="grow" placeholder="パスワード" />
                     </label>
-                    {fieldState.invalid && (
-                      <p className="text-red-500 mt-2">
-                        {fieldState.error?.message}
-                      </p>
-                    )}
+                    {fieldState.invalid && <p className="text-red-500 mt-2">{fieldState.error?.message}</p>}
                   </div>
                 </>
               )}
             />
-            <input
-              type="submit"
-              value="登録完了"
-              className="mt-12 btn w-full"
-            />
+            <input type="submit" value="登録完了" className="mt-12 btn w-full" />
           </form>
         </div>
 
         <div className="flex justify-center h-[400px] border-t border-zinc-400 ">
           <div className="w-1/2">
-            <button
-              onClick={handleGoogleAuth}
-              className="mt-12 btn w-full bg-green-300"
-            >
+            <button onClick={handleGoogleAuth} className="mt-12 btn w-full bg-green-300">
               Googleで登録
             </button>
 
             <p className="mt-16 flex justify-center">アカウントをお持ちの方</p>
             <Link href="/auth/sign_in">
-              <input
-                type="submit"
-                value="ログイン"
-                className="mt-8 btn w-full bg-white"
-              />
+              <input type="submit" value="ログイン" className="mt-8 btn w-full bg-white" />
             </Link>
           </div>
         </div>
