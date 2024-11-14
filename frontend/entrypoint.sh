@@ -34,4 +34,11 @@ groupdel tempgroup
 
 chown -R dcuser:dcuser /frontend
 
+
+# node_modulesのインストール
+npm install
+# npm outdated <- なぜかexited with code 1で止まるので削除
+npm update
+npm prune
+
 exec "$@"
