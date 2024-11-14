@@ -9,7 +9,12 @@ Rails.application.routes.draw do
         resource :user, only: [:show]
         resources :items, only: [:index, :show, :update]
       end
+
       resources :items, only: [:new, :create, :index, :show]
+
+      # stripeの連結アカウントの作成(test)
+      post "account", to: "accounts#create_account"
+      post "account_session", to: "accounts#create_account_session"
     end
   end
 end
