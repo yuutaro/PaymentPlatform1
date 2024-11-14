@@ -14,21 +14,21 @@ groupadd -g $GROUPID dcuser
 useradd -m -s /bin/bash -u $USERID -g $GROUPID dcuser
 
 
-# gemをアップデート
-gem update --system
-bundle update --bundler
+# # gemをアップデート
+# gem update --system
+# bundle update --bundler
 
-# bundle installのインストール先をプロジェクトディレクトリ内に変更
-bundle config set --local path 'vendor/bundle'
+# # bundle installのインストール先をプロジェクトディレクトリ内に変更
+# bundle config set --local path 'vendor/bundle'
 
+# # bundle install
 # bundle install
-bundle install
 
-# いらないgemを削除
-bundle clean
+# # いらないgemを削除
+# bundle clean
 
-# /backend ディレクトリの所有者を dcuser に変更
-chown -R dcuser:dcuser /backend
+# # /backend ディレクトリの所有者を dcuser に変更
+# chown -R dcuser:dcuser /backend
 
 # CMDで指定されたコマンドを実行
 exec "$@"
