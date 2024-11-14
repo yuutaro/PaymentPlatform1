@@ -32,3 +32,6 @@
 /config/master.key
 
 /public/uploads/*
+
+# ライブラリのソースvendor/bundle/を無視
+/vendor/bundle
