@@ -26,7 +26,7 @@ class Api::V1::Stripe::CheckoutController < Api::V1::BaseController
       payment_intent_data: {
         application_fee_amount: application_fee_amount,
         transfer_data: {destination: 'acct_1QQJEBR7NV47Joaq'},
-        # capture_method: 'manual',
+        capture_method: 'manual',
       },
       mode: 'payment',
       ui_mode: 'embedded',
@@ -38,19 +38,19 @@ class Api::V1::Stripe::CheckoutController < Api::V1::BaseController
   end
 
   # checkout_sessionの完了処理
-  # def capture_complete
-  #   # checkoutのsession_idを格納
-  #   session_id = params[:session_id]
-  #   # checkout_sessionの全ての情報を取得
-  #   checkout_session = Stripe::Checkout::Session.retrieve(session_id)
-  #   # その中のpayment_intentだけを取得
-  #   payment_intent_id = checkout_session.payment_intent
+  def capture_complete
+    # checkoutのsession_idを格納
+    session_id = params[:session_id]
+    # checkout_sessionの全ての情報を取得
+    checkout_session = Stripe::Checkout::Session.retrieve(session_id)
+    # その中のpayment_intentだけを取得
+    payment_intent_id = checkout_session.payment_intent
 
-  #   # 指定したpayment_intent_idの支払いを確定
-  #   payment_intent = Stripe::PaymentIntent.capture(payment_intent_id)
+    # 指定したpayment_intent_idの支払いを確定
+    payment_intent = Stripe::PaymentIntent.capture(payment_intent_id)
 
-  #   render json: { payment_intent: payment_intent }
-  # end
+    render json: { payment_intent: payment_intent }
+  end
 
 
 

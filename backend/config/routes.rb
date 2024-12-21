@@ -18,7 +18,7 @@ Rails.application.routes.draw do
         get 'checkout/create_checkout_session', to: 'checkout#create_checkout_session'
         
         # capture完了
-        # post 'checkout/capture_complete', to: 'checkout#capture_complete'
+        post 'checkout/capture_complete', to: 'checkout#capture_complete'
       end
     end
   end
