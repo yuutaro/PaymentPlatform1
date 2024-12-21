@@ -11,8 +11,9 @@
     "format": "next lint --fix --dir src"
   },
   "dependencies": {
-    "@stripe/connect-js": "^3.3.12",
-    "@stripe/react-connect-js": "^3.3.13",
+    "@stripe/connect-js": "^3.3.18",
+    "@stripe/react-connect-js": "^3.3.19",
+    "@stripe/react-stripe-js": "^3.0.0",
     "@stripe/stripe-js": "^4.8.0",
     "axios": "^1.7.2",
     "camelcase-keys": "^9.0.0",
