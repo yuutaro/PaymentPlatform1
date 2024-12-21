@@ -15,7 +15,7 @@ Rails.application.routes.draw do
         resources :account, only: [:create, :update]
         resources :account_session, only: [:create]
         # checkoutセッション作成
-        # get 'checkout/create_checkout_session', to: 'checkout#create_checkout_session'
+        get 'checkout/create_checkout_session', to: 'checkout#create_checkout_session'
         
         # capture完了
         # post 'checkout/capture_complete', to: 'checkout#capture_complete'
